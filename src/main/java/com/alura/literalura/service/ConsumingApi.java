@@ -10,7 +10,7 @@ public class ConsumingApi {
     public String getApiData(String apiUrl) {
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(apiUrl)).build();
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
 
         try {
             response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -18,6 +18,8 @@ public class ConsumingApi {
             throw new RuntimeException(e);
         }
 
-        return response.body();
+        String json = response.body();
+        System.out.println(json);
+        return json;
     }
 }
