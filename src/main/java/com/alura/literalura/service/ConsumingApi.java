@@ -8,16 +8,20 @@ import java.net.http.HttpResponse;
 
 public class ConsumingApi {
     public String getApiData(String apiUrl) {
-        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpClient client = HttpClient.newBuilder()
+                .followRedirects(HttpClient.Redirect.ALWAYS)
+                .build();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(apiUrl)).build();
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
 
         try {
-            response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        return response.body();
+        var json = response.body();
+        return json;
     }
 }

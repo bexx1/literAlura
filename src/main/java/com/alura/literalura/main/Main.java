@@ -1,5 +1,8 @@
 package com.alura.literalura.main;
 
+import com.alura.literalura.model.Book;
+import com.alura.literalura.model.BookData;
+import com.alura.literalura.model.ResultsData;
 import com.alura.literalura.service.ConsumingApi;
 import com.alura.literalura.service.ConvertData;
 
@@ -16,6 +19,8 @@ public class Main {
         System.out.println("Choose the book you want by it's title: ");
         String bookTitle = scanner.nextLine();
 
-        var bookJson = consumingApi.getApiData(apiUrlStart + bookTitle.replace(" ", "+"));
+        var bookJson = consumingApi.getApiData(apiUrlStart + bookTitle.toLowerCase().replace(" ", "+"));
+        ResultsData resultsData = converter.getData(bookJson, ResultsData.class);
+
     }
 }
