@@ -16,12 +16,10 @@ public class ConsumingApi {
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        var json = response.body();
-        return json;
+        return response.body();
     }
 }
