@@ -2,9 +2,12 @@ package com.alura.literalura.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Table(name = "authors", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
-public class Authors {
+@Table(name = "authors")
+public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -12,20 +15,19 @@ public class Authors {
     private String name;
     private Integer birth_year;
     private Integer death_year;
-    @ManyToOne
-    private Book book;
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Book> books = new ArrayList<>();
 
 // CONSTRUCTOR
-    public Authors() {}
-    public Authors(AuthorsData authorsData, Book book) {
-        String[] author = authorsData.name().split(",");
+    public Author() {}
+    public Author(AuthorData authorData) {
+        String[] author = authorData.name().split(",");
         this.name = author[1] + " " + author[0];
-        this.birth_year = authorsData.birth_year();
-        this.death_year = authorsData.death_year();
-        this.book = book;
+        this.birth_year = authorData.birth_year();
+        this.death_year = authorData.death_year();
     }
 
-// GETTERS
+    // GETTERS
     public Integer getId() {return id;}
     public String getName() {return name;}
     public Integer getBirth_year() {return birth_year;}

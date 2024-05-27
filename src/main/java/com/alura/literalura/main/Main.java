@@ -1,8 +1,6 @@
 package com.alura.literalura.main;
 
-import com.alura.literalura.model.Book;
-import com.alura.literalura.model.BookData;
-import com.alura.literalura.model.ResultsData;
+import com.alura.literalura.model.*;
 import com.alura.literalura.repository.BookRepository;
 import com.alura.literalura.service.ConsumingApi;
 import com.alura.literalura.service.ConvertData;

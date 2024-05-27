@@ -2,7 +2,6 @@ package com.alura.literalura.model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,10 +10,9 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
     private String title;
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Authors> authors = new ArrayList<>();
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Author author;
     private List<String> languages;
     private Integer download_count;
 
@@ -22,26 +20,26 @@ public class Book {
     public Book() {}
     public Book(BookData bookData) {
         this.title = bookData.title();
-        this.authors = bookData.authors();
-        //List<AuthorsData> authorsData = bookData.authors().stream().toList();
-        //authorsData.forEach(a -> authors.add(new Authors(a, this)));
+        var data = bookData.author();
+        AuthorData authorData = new AuthorData(data.getName(), data.getBirth_year(), data.getDeath_year());
+        this.author = new Author(authorData);
         this.languages = bookData.languages();
         this.download_count = bookData.download_count();
     }
 
 
-    // GETTERS
+// GETTERS
     public String getTitle() {return title;}
     public List<String> getLanguages() {return languages;}
     public Integer getDownload_count() {return download_count;}
-
-// TO STRING
+    public Author getAuthor() {return author;}
+    // TO STRING
 
     @Override
     public String toString() {
         return "Book: " + '\n' +
                 "title='" + title + '\n' +
-                "authors=" + authors + '\n' +
+                "author=" + author + '\n' +
                 "languages=" + languages + '\n' +
                 "download_count=" + download_count;
     }
