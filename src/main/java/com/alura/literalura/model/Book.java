@@ -11,18 +11,18 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Author author;
+    private String authorName;
     private List<String> languages;
     private Integer download_count;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Author author;
 
 // CONSTRUCTOR
     public Book() {}
     public Book(BookData bookData) {
         this.title = bookData.title();
-        var data = bookData.author();
-        AuthorData authorData = new AuthorData(data.getName(), data.getBirth_year(), data.getDeath_year());
-        this.author = new Author(authorData);
+        this.authorName = bookData.authors().get(0).name();
         this.languages = bookData.languages();
         this.download_count = bookData.download_count();
     }
@@ -33,8 +33,11 @@ public class Book {
     public List<String> getLanguages() {return languages;}
     public Integer getDownload_count() {return download_count;}
     public Author getAuthor() {return author;}
-    // TO STRING
 
+// SETTERS
+    public void setAuthor(Author author) {this.author = author;}
+
+// TO STRING
     @Override
     public String toString() {
         return "Book: " + '\n' +

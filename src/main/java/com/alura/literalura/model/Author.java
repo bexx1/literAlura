@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "authors")
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Column(unique = true)
     private String name;
     private Integer birth_year;
@@ -27,14 +28,25 @@ public class Author {
         this.death_year = authorData.death_year();
     }
 
-    // GETTERS
-    public Integer getId() {return id;}
+// GETTERS
+    public Long getId() {return id;}
     public String getName() {return name;}
     public Integer getBirth_year() {return birth_year;}
     public Integer getDeath_year() {return death_year;}
+    public List<Book> getBooks() {return books;}
+
+// SETTERS
+    public void setBooks(Book book) {
+        this.books.add(book);
+        book.setAuthor(this);
+    }
+
+// METHODS
+    public List<String> allBooks() {
+        return books.stream().map(b -> b.getTitle()).collect(Collectors.toList());
+    }
 
 // TO STRING
-
     @Override
     public String toString() {
         return '\n' + " Author: " + '\n' +
