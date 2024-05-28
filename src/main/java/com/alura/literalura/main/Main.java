@@ -1,7 +1,9 @@
 package com.alura.literalura.main;
 
 import com.alura.literalura.model.*;
+import com.alura.literalura.repository.AuthorRepository;
 import com.alura.literalura.repository.BookRepository;
+import com.alura.literalura.service.BookService;
 import com.alura.literalura.service.ConsumingApi;
 import com.alura.literalura.service.ConvertData;
 
@@ -13,13 +15,12 @@ public class Main {
     private Scanner scanner = new Scanner(System.in);
     private ConsumingApi consumingApi = new ConsumingApi();
     private ConvertData converter = new ConvertData();
-    private BookRepository repository;
+    private BookService bookService = new BookService();
     private final String apiUrlStart = "https://gutendex.com//books?search=";
-    List<Book> books = new ArrayList<>();
 
 // CONSTRUCTOR
-    public Main(BookRepository repository) {
-        this.repository = repository;
+    public Main(BookService bookService) {
+        this.bookService = bookService;
     }
 
     // METHOD
@@ -62,8 +63,13 @@ public class Main {
     private void getBook() {
         BookData bookData = getBookData();
         Book book = new Book(bookData);
-        repository.save(book);
 
-        System.out.println(book);
+        // getting the first author in the array inside bookData and putting him into the Author class
+        var firstAuthor = bookData.authors().get(0);
+        AuthorData authorData = new AuthorData(firstAuthor.name(), firstAuthor.birth_year(), firstAuthor.death_year());
+        Author author = new Author(authorData);
+
+        book.setAuthor(author);
+        bookService.saveBook(book);
     }
 }
