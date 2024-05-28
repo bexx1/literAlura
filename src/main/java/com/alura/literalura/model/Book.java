@@ -14,8 +14,7 @@ public class Book {
     private String authorName;
     private List<String> languages;
     private Integer download_count;
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Author author;
 
 // CONSTRUCTOR
