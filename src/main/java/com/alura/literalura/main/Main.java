@@ -29,6 +29,10 @@ public class Main {
                 ***********************************************
                     Choose your option by it's number:
                     1 - Search book by title
+                    2 - Show list of books registered
+                    3 - Show list of authors registered
+                    4 - Show list of authors that were/are alive in ... year
+                    5 - Show list of books in ... language
                 
                     0 - Exit
                 ***********************************************
@@ -43,6 +47,9 @@ public class Main {
             switch ( option ) {
                 case 1:
                     getBook();
+                    break;
+                default:
+                    System.out.println("bye bye!");
                     break;
             }
         }
