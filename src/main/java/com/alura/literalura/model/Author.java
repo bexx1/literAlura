@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "authors")
+@Table(name = "Author")
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class Author {
     public Author() {}
     public Author(AuthorData authorData) {
         String[] author = authorData.name().split(",");
-        this.name = author[1] + " " + author[0];
+        this.name = author[1] + " " + author[0] ;
         this.birth_year = authorData.birth_year();
         this.death_year = authorData.death_year();
     }
@@ -43,15 +43,15 @@ public class Author {
 
 // METHODS
     public List<String> allBooks() {
-        return books.stream().map(b -> b.getTitle()).collect(Collectors.toList());
+        return books.stream().map(Book::getTitle).collect(Collectors.toList());
     }
 
 // TO STRING
     @Override
     public String toString() {
-        return '\n' + " Author: " + '\n' +
-                "   name=" + name + '\n' +
-                "   birth_year=" + birth_year + '\n' +
-                "   death_year=" + death_year + '\n';
+        return "   author: {" + '\n' +
+                "       name= " + name + '\n' +
+                "       birth year= " + birth_year + '\n' +
+                "       death year= " + death_year + '\n' + "   }";
     }
 }
