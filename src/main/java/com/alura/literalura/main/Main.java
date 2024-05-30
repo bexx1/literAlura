@@ -1,22 +1,17 @@
 package com.alura.literalura.main;
 
 import com.alura.literalura.model.*;
-import com.alura.literalura.repository.AuthorRepository;
-import com.alura.literalura.repository.BookRepository;
 import com.alura.literalura.service.BookService;
 import com.alura.literalura.service.ConsumingApi;
 import com.alura.literalura.service.ConvertData;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    private Scanner scanner = new Scanner(System.in);
-    private ConsumingApi consumingApi = new ConsumingApi();
-    private ConvertData converter = new ConvertData();
-    private BookService bookService = new BookService();
-    private final String apiUrlStart = "https://gutendex.com//books?search=";
+    private final Scanner scanner = new Scanner(System.in);
+    private final ConsumingApi consumingApi = new ConsumingApi();
+    private final ConvertData converter = new ConvertData();
+    private final BookService bookService;
 
 // CONSTRUCTOR
     public Main(BookService bookService) {
@@ -28,7 +23,7 @@ public class Main {
         String menu = """
                 ***********************************************
                     Choose your option by it's number:
-                    1 - Search book by title
+                    1 - Add a book to the library
                     2 - Show list of books registered
                     3 - Show list of authors registered
                     4 - Show list of authors that were/are alive in ... year
@@ -48,9 +43,23 @@ public class Main {
                 case 1:
                     getBook();
                     break;
-                default:
+                case 2:
+                    getAllBooks();
+                    break;
+                case 3:
+                    getAllAuthors();
+                    break;
+                case 4:
+                    getAuthorsAliveIn();
+                    break;
+                case 5:
+                    getBooksByLanguage();
+                    break;
+                case 0:
                     System.out.println("bye bye!");
                     break;
+                default:
+                    System.out.println("Invalid option, try again...");
             }
         }
 
@@ -58,6 +67,7 @@ public class Main {
 
 // CASE 1
     private BookData getBookData() {
+        String apiUrlStart = "https://gutendex.com//books?search=";
         System.out.println("Insert the name of the book: ");
         String bookTitle = scanner.nextLine();
 
@@ -78,5 +88,45 @@ public class Main {
 
         book.setAuthor(author);
         bookService.saveBook(book);
+        System.out.println(book);
+    }
+
+// CASE 2
+    private void getAllBooks() {
+        var books = bookService.getAllBooks();
+        if(!books.isEmpty()) {
+            books.forEach(System.out::println);
+        } else {
+            System.out.println("You haven't registered any books, please go to option 1 and register one");
+        }
+    }
+
+// CASE 3
+    private void getAllAuthors() {
+        var authors = bookService.getAllAuthors();
+        if(!authors.isEmpty()) {
+            authors.forEach(System.out::println);
+        } else {
+            System.out.println("You haven't registered any author, please go to option 1 and register a book to get the author");
+        }
+    }
+
+// CASE 4
+    private void getAuthorsAliveIn() {
+        System.out.println("Insert the year you want to search: ");
+        String year = scanner.nextLine();
+
+        var authorsAliveIn = bookService.getAuthorsAliveIn(year);
+        if(!authorsAliveIn.isEmpty()) {
+            authorsAliveIn.forEach(System.out::println);
+        } else {
+            System.out.println("No registered author was alive this year");
+        }
+    }
+
+// CASE 5
+    private void getBooksByLanguage() {
+        var booksByLanguage = bookService.getBooksByLanguage();
+        booksByLanguage.forEach(System.out::println);
     }
 }
