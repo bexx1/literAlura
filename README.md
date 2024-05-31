@@ -48,4 +48,5 @@ https://github.com/bexx1/literAlura_Java/assets/114870774/a5de2408-38cc-40b1-b04
 
 ## Badge
 Badge that indicates that I have finished the challenge.
+
 ![badge literalura](https://github.com/bexx1/literAlura_Java/assets/114870774/d71dfaee-fc9d-4acf-8d32-a74f866b4543)
